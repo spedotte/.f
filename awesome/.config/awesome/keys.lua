@@ -21,7 +21,7 @@ local previous_layout = nil
 
 local globalkeys = gears.table.join(
     -- Applications launcher: dmenu. Archlinux package: dmenu
-    awful.key({ ModKey,           }, "p", function() awful.spawn.with_shell("dmenu_run") end),
+    awful.key({ ModKey,           }, "r", function() awful.spawn.with_shell("dmenu_run") end),
     -- Dmscripts (my own scripts): see the dotfile's README for more info
     awful.key({ ModKey,           }, "y", function() awful.spawn.with_shell("bash ~/.config/dmscripts/main.sh") end),
     -- Qutebrowser (web browser). You can change this to match your browser (don't use chrome, opera, vivaldi, brave, firefox, etc.)
@@ -36,7 +36,7 @@ local globalkeys = gears.table.join(
     -- Open weechat quake terminal
     awful.key({ ModKey,           }, "k", function() weechat_quake:toggle() end),
     -- ncmpcpp: terminal music player/mpd frontend. Archlinux package: ncmpcpp.
-    awful.key({ ModKey,           }, "slash", function() awful.spawn.with_shell(TerminalCmd .. " ncmpcpp") end),
+    awful.key({ ModKey,           }, "!", function() awful.spawn.with_shell(TerminalCmd .. " ncmpcpp") end),
 
     -- Open terminal (I use alacritty)
     awful.key({ ModKey,           }, "Return", function () awful.spawn.with_shell(Terminal) end),
@@ -45,10 +45,10 @@ local globalkeys = gears.table.join(
     awful.key({ ModKey, "Shift" }, "Return", function () awful.spawn.with_shell(TerminalCmd .. " ssh risitas@cocinero -t \"tmux a -t services\"") end),
 
     -- Reload awesomewm. This is useful when you change the config file.
-    awful.key({ ModKey,  }, "q", awesome.restart),
+    awful.key({ ModKey,  }, "a", awesome.restart),
 
     -- Shutdown the computer
-    awful.key({ ModKey, "Control" }, "q", function() awful.spawn.with_shell("sudo shutdown now") end),
+    awful.key({ ModKey, "Control" }, "a", function() awful.spawn.with_shell("sudo shutdown now") end),
 
     -- Hibernate the computer: you need some configuration for this to work. See the archwiki, page on hibernation.
     awful.key({ ModKey, "Control" }, "h", function() awful.spawn.with_shell("sudo systemctl hibernate") end),
@@ -78,33 +78,33 @@ local globalkeys = gears.table.join(
 
 
     -- Focus (colemak hjkl=neio)
-    awful.key({ ModKey,           }, "i",
+    awful.key({ ModKey,           }, "l",
         function ()
             awful.client.focus.byidx( 1)
         end
     ),
-    awful.key({ ModKey,           }, "e",
+    awful.key({ ModKey,           }, "k",
         function ()
             awful.client.focus.byidx(-1)
         end
     ),
 
     -- Layout manipulation (still colemak keys)
-    awful.key({ ModKey, "Shift"   }, "i",     function () awful.client.swap.byidx(  1)        end), -- Swap with next client
-    awful.key({ ModKey, "Shift"   }, "e",     function () awful.client.swap.byidx( -1)        end), -- Swap with previous client
-    awful.key({ ModKey, "Shift"   }, "o",     function () awful.tag.incmwfact( 0.05)          end), -- Increase master width factor
-    awful.key({ ModKey, "Shift"   }, "n",     function () awful.tag.incmwfact(-0.05)          end), -- Decrease master width factor
-    awful.key({ ModKey,           }, "n",     function () awful.tag.incnmaster( 1, nil, true) end), -- Increase the number of master clients
-    awful.key({ ModKey,           }, "o",     function () awful.tag.incnmaster(-1, nil, true) end), -- Decrease the number of master clients
-    awful.key({ ModKey, "Shift"   }, "m",     function () awful.tag.incncol( 1, nil, true)    end), -- Increase the number of columns
-    awful.key({ ModKey, "Shift"   }, "/",     function () awful.tag.incncol(-1, nil, true)    end), -- Decrease the number of columns
+    awful.key({ ModKey, "Shift"   }, "l",     function () awful.client.swap.byidx(  1)        end), -- Swap with next client
+    awful.key({ ModKey, "Shift"   }, "k",     function () awful.client.swap.byidx( -1)        end), -- Swap with previous client
+    awful.key({ ModKey, "Shift"   }, "m",     function () awful.tag.incmwfact( 0.05)          end), -- Increase master width factor
+    awful.key({ ModKey, "Shift"   }, "j",     function () awful.tag.incmwfact(-0.05)          end), -- Decrease master width factor
+    awful.key({ ModKey,           }, "j",     function () awful.tag.incnmaster( 1, nil, true) end), -- Increase the number of master clients
+    awful.key({ ModKey,           }, "m",     function () awful.tag.incnmaster(-1, nil, true) end), -- Decrease the number of master clients
+    awful.key({ ModKey, "Shift"   }, ",",     function () awful.tag.incncol( 1, nil, true)    end), -- Increase the number of columns
+    awful.key({ ModKey, "Shift"   }, "!",     function () awful.tag.incncol(-1, nil, true)    end), -- Decrease the number of columns
 
     -- Change layout
-    awful.key({ ModKey,           }, ",", function () awful.layout.inc( 1)                end),
+    awful.key({ ModKey,           }, ";", function () awful.layout.inc( 1)                end),
 
     -- Toggle maximized layout
     -- This will just crash if you set the default layout to maximized, but else it works well.
-    awful.key({ ModKey,           }, ".", function ()
+    awful.key({ ModKey,           }, ":", function ()
         local screen = awful.screen.focused()
         local tag = screen.selected_tag
         local current_layout = tag.layout
@@ -120,7 +120,7 @@ local globalkeys = gears.table.join(
     end),
 
     -- Restore last minimized client
-    awful.key({ ModKey, }, "u",
+    awful.key({ ModKey, }, "i",
               function ()
                   local c = awful.client.restore()
                   -- Focus restored client
@@ -132,7 +132,7 @@ local globalkeys = gears.table.join(
               end),
 
     -- Bookmarks with dmenu (lets you choose a line from ~/.config/awesome/bookmarks and types it for you using xdotool)
-    awful.key({ ModKey }, "m", function ()
+    awful.key({ ModKey }, ",", function ()
         awful.spawn.with_shell("grep -v '^#' ~/.config/awesome/bookmarks | grep -v -e '^$' | dmenu -p 'Select bookmark:' -i -l 10 | xargs -r xdotool type")
     end),
 
@@ -143,19 +143,19 @@ local globalkeys = gears.table.join(
 -- Keys for clients (windows)
 ClientKeys = gears.table.join(
     -- Toggle fullscreen = no borders, bar, titlebar, or gaps
-    awful.key({ ModKey,           }, "f",
+    awful.key({ ModKey,           }, "e",
         function (c)
             c.fullscreen = not c.fullscreen
             c:raise()
         end),
     -- Close client
-    awful.key({ ModKey,           }, "w",      function (c) c:kill()                         end),
+    awful.key({ ModKey,           }, "z",      function (c) c:kill()                         end),
     -- Toggle floating
     awful.key({ ModKey            }, "c",  awful.client.floating.toggle                     ),
     -- Toggle maximized
     awful.key({ ModKey, "Shift"   }, "f",  function (c) c.maximized = not c.maximized end),
     -- Minimize client
-    awful.key({ ModKey,           }, "l",
+    awful.key({ ModKey,           }, "u",
         function (c)
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.
@@ -174,7 +174,7 @@ ClientKeys = gears.table.join(
 
 -- Bind all key numbers to tags.
 -- Colemak's "arstd" = qwerty's "asdfg"
-local tagkeys = { "a", "r", "s", "t", "d"}
+local tagkeys = { "q", "s", "d", "f", "g"}
 -- Here change the number 5 to the number of buttons you set just above.
 for i = 1, 5 do
     globalkeys = gears.table.join(globalkeys,
